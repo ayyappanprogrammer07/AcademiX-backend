@@ -114,5 +114,12 @@
             public string? departmentname { get; set; }
         }
 
+        public class Boysandgirlscount
+        {
+            public int boyscount { get; set; }
+
+            public int girlscount { get; set; }
+        }
+
     }
 }

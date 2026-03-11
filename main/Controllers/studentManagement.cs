@@ -23,6 +23,15 @@ namespace main.Controllers
 
         }
         [HttpGet]
+        [Route("GetStudentDetails")]
+        public List<InsertStudentRequestDTO> GetStudentDetails()
+        {
+            List<InsertStudentRequestDTO> result = _studentmanagementserviceInterface.GetStudentDetails();
+            return result;
+        }
+
+
+        [HttpGet]
         [Route("GetCourses")]
         public List<CourseResponseDto> getcourses()
         {
@@ -36,6 +45,30 @@ namespace main.Controllers
         {
             List<DepartmentResponseDto> departments = _studentmanagementserviceInterface.getDepartments(courseid);
             return departments;
+        }
+
+        [HttpGet]
+        [Route("GetTotalStudentsCount")]
+        public int GetTotalStudentsCount()
+        {
+            int count = _studentmanagementserviceInterface.GetTotalStudentsCount(); ;
+            return count;
+        }
+
+        [HttpGet]
+        [Route("GetTotalActiveStudentsCount")]
+        public int GetTotalActiveStudentsCount()
+        {
+            int count = _studentmanagementserviceInterface.GetTotalActiveStudentsCount();
+            return count;
+        }
+
+        [HttpGet]
+        [Route("GetTotalBoysandGirlscount")]
+        public Boysandgirlscount GetTotalBoysandGirlscount()
+        {
+            Boysandgirlscount result = _studentmanagementserviceInterface.GetTotalBoysandGirlscount();
+            return result;
         }
 
     }

@@ -1,8 +1,13 @@
 ﻿using main.Dto;
 using main.interfacerepo;
-using System.Data;
-using static main.Dto.studentManagementDto;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Diagnostics.Metrics;
+using System.Net.Mail;
+using System.Reflection.Metadata.Ecma335;
+using System.Text.RegularExpressions;
+using static main.Dto.studentManagementDto;
+using static System.Collections.Specialized.BitVector32;
 
 namespace main.repoS
 {
@@ -117,6 +122,106 @@ namespace main.repoS
         }
 
 
+        //THIS RESPONSIBLE FOR FETCHING THE STUDENT DETAILS
+        public List<InsertStudentRequestDTO> GetStudentDetails()
+        {
+            List<InsertStudentRequestDTO> result = new List<InsertStudentRequestDTO>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("studentmanagement.getStudentDetails", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            InsertStudentRequestDTO data = new InsertStudentRequestDTO
+                            {
+                                PersonalInfo = new PersonalInfoDTO
+                                {
+                                    RegNo = Convert.ToString(reader["regno"]),
+                                    FirstName = Convert.ToString(reader["FirstName"]),       
+                                    MiddleName = Convert.ToString(reader["MiddleName"]),
+                                    LastName = Convert.ToString(reader["LastName"]),
+                                    Gender = Convert.ToString(reader["Gender"]),
+                                    DateOfBirth = Convert.ToString(reader["DateofBirth"]),
+                                    Age = Convert.ToInt32(reader["Age"]),
+                                    BloodGroup = Convert.ToString(reader["BloodGroup"]),
+                                    Nationality = Convert.ToString(reader["Nationality"]),
+                                    CategoryOrCommunity = Convert.ToString(reader["CategoryorCommunity"]),
+                                },
+                                ContactInfo =new ContactInfoDTO
+                                {
+                                    MobileNo = Convert.ToString(reader["mobileno"]),
+                                    AlternateMobile = Convert.ToString(reader["AlternateMobile"]),
+                                    EmailAddress = Convert.ToString(reader["Emailaddress"]),
+                                    AddressLine1 = Convert.ToString(reader["AddressLine1"]),
+                                    AddressLine2 = Convert.ToString(reader["AddressLine2"]),
+                                    City = Convert.ToString(reader["City"]),
+                                    State = Convert.ToString(reader["State"]),
+                                    Country = Convert.ToString(reader["Country"]),
+                                    PostalCode = Convert.ToString(reader["PostalCode"])
+                                },
+                                ParentDetails =new ParentDetailsDTO
+                                {
+                                    FatherName = Convert.ToString(reader["FatherName"]),
+                                    FathersMobileNumber = Convert.ToString(reader["FathersMobilenumber"]),
+                                    MothersName = Convert.ToString(reader["MothersName"]),
+                                    MothersMobile = Convert.ToString(reader["MothersMobile"]),
+                                    GuardianName = Convert.ToString(reader["GuardianName"]),
+                                    GuardianPhone = Convert.ToString(reader["GuardianPhone"]),
+                                    Relationship = Convert.ToString(reader["Relationship"])
+                                },
+                                AcademicDetails = new AcademicDetailsDTO
+                                {
+                                    CourseOrProgram = Convert.ToString(reader["courseorprogram"]),
+                                    Department = Convert.ToString(reader["Department"]),
+                                    Year = Convert.ToString(reader["Year"]),
+                                    Semester = Convert.ToString(reader["Semester"]),
+                                    Section = Convert.ToString(reader["Section"]),
+                                    RollNo = Convert.ToString(reader["RollNo"]),
+                                    AdmissionDate = Convert.ToString(reader["AdmissionDate"]),
+                                    AdmissionType = Convert.ToString(reader["AdmissionType"])
+                                },
+                                IdentificationDetails = new IdentificationDetailsDTO
+                                {
+                                    AadhaarNumber = Convert.ToString(reader["AadhaarNumber"]),
+                                    PassportNumber = Convert.ToString(reader["PassportNumber"]),
+                                    GovtIDType = Convert.ToString(reader["GovtIDType"]),
+                                    GovtIDNumber = Convert.ToString(reader["GovtIDNumber"]),
+
+                                    SslcSchool = Convert.ToString(reader["sslcSchool"]),
+                                    SslcBoard = Convert.ToString(reader["sslcBoard"]),
+                                    SslcYearOfPassing = Convert.ToString(reader["sslcYearofPassing"]),
+                                    SslcPercentageOrCGPA = Convert.ToString(reader["sslcPercentageporCGPA"]),
+
+                                    HscSchool = Convert.ToString(reader["hscSchool"]),
+                                    HscBoard = Convert.ToString(reader["hscBoard"]),
+                                    HscYearOfPassing = Convert.ToString(reader["hscYearofPassing"]),
+                                    HscPercentageOrCGPA = Convert.ToString(reader["hscPercentageporCGPA"]),
+
+                                    PreviousDegree = Convert.ToString(reader["PreviousDegree"]),
+                                    PreviousDepartment = Convert.ToString(reader["PreviousDepartment"]),
+                                    PreviousInstitution = Convert.ToString(reader["PreviousInstitution"]),
+                                    PreviousUniversity = Convert.ToString(reader["PreviousUniversity"]),
+                                    PreviousYearOfPassing = Convert.ToString(reader["PreviousYearofPassing"]),
+                                    PreviousPercentageOrCGPA = Convert.ToString(reader["PreviousPercentageorCGPA"])
+                                }
+                            };
+                            result.Add(data);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+            return result;
+        }
+
         public List<CourseResponseDto> getcourses()
         {
             List<CourseResponseDto> courses = new List<CourseResponseDto>();
@@ -153,7 +258,8 @@ namespace main.repoS
             
         }
 
-        public List<DepartmentResponseDto> getDepartments(int courseid) {
+        public List<DepartmentResponseDto> getDepartments(int courseid)
+        {
 
             List<DepartmentResponseDto> departments = new List<DepartmentResponseDto>();
             try
@@ -189,5 +295,71 @@ namespace main.repoS
 
         }
 
+        public int GetTotalStudentsCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("studentmanagement.getTotalStudents", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        count = Convert.ToInt32(cmd.ExecuteScalar());         
+                    }
+                }
+            }
+            catch
+            {
+                count = 0;
+            }
+            return count;
+        }
+        public int GetTotalActiveStudentsCount()
+        {
+            int count = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("studentmanagement.getTotalActiveStudents", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        count = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch
+            {
+                count = 0;
+            }
+            return count;
+        }
+        public Boysandgirlscount GetTotalBoysandGirlscount()
+        {
+            Boysandgirlscount result = new Boysandgirlscount();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("studentmanagement.getTotalBoysorGirlsCount", connection))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        result.boyscount = Convert.ToInt32(reader["Boyscount"]);
+                        result.girlscount = Convert.ToInt32(reader["Girlscount"]);
+                    }
+                }
+            }
+            catch
+            {
+                result.boyscount = 0;
+                result.girlscount = 0;
+            }
+            return result;
+        }
     }
 }

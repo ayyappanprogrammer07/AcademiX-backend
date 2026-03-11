@@ -12,6 +12,11 @@ namespace main.Services
         {
             _studentmanagementrepoInterface = studentmanagementrepoInterface;
         }
+        public List<InsertStudentRequestDTO> GetStudentDetails()
+        {
+            List<InsertStudentRequestDTO> resut = _studentmanagementrepoInterface.GetStudentDetails();
+            return resut;
+        }
         public InsertStudentResponseDTO insert_student(InsertStudentRequestDTO _insertStudentRequestDTO)
         {
             InsertStudentResponseDTO result = _studentmanagementrepoInterface.insert_student(_insertStudentRequestDTO);
@@ -28,6 +33,24 @@ namespace main.Services
             List<DepartmentResponseDto> departments = _studentmanagementrepoInterface.getDepartments(courseid);
             return departments;
         }
+
+        public int GetTotalStudentsCount()
+        {
+            int count = _studentmanagementrepoInterface.GetTotalStudentsCount();
+            return count;
+        }
+        public int GetTotalActiveStudentsCount()
+        {
+            int count = _studentmanagementrepoInterface.GetTotalActiveStudentsCount();
+            return count;
+        }
+        public Boysandgirlscount GetTotalBoysandGirlscount()
+        {
+            Boysandgirlscount result = _studentmanagementrepoInterface.GetTotalBoysandGirlscount();
+            return result;
+        }
+
+
     }
 }
 
