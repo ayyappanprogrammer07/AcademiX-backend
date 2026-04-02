@@ -15,6 +15,8 @@
             public string? BloodGroup { get; set; }
             public string? Nationality { get; set; }
             public string? CategoryOrCommunity { get; set; }
+
+            public string? createdon {  get; set; }
         }
 
         // CONTACT INFO
@@ -102,8 +104,6 @@
         }
         public class CourseResponseDto
         {
-
-
             public int courseid { get; set; }
             public string? coursename { get; set; }
         }
@@ -116,9 +116,9 @@
 
         public class Boysandgirlscount
         {
-            public int boyscount { get; set; }
+            public int? boyscount { get; set; }
 
-            public int girlscount { get; set; }
+            public int? girlscount { get; set; }
         }
 
     }

@@ -14,6 +14,7 @@ namespace main.Controllers
         {
             _studentmanagementserviceInterface = studentmanagementserviceInterface;
         }
+
         [HttpPost]
         [Route("InsertStudent")]
         public InsertStudentResponseDTO insert_student(InsertStudentRequestDTO _insertStudentRequestDTO)
@@ -41,7 +42,7 @@ namespace main.Controllers
         }
         [HttpGet]
         [Route("GetDepartments")]
-        public List<DepartmentResponseDto>getDepartments(int courseid)
+        public List<DepartmentResponseDto> getDepartments(int courseid)
         {
             List<DepartmentResponseDto> departments = _studentmanagementserviceInterface.getDepartments(courseid);
             return departments;
@@ -70,6 +71,37 @@ namespace main.Controllers
             Boysandgirlscount result = _studentmanagementserviceInterface.GetTotalBoysandGirlscount();
             return result;
         }
+
+        [HttpGet]
+        [Route("getcountnewmonth")]
+        public int getcountnewmonth()
+        {
+            return _studentmanagementserviceInterface.getcountnewmonth();
+        }
+
+        [HttpGet]
+        [Route("isregnouniqueornot")]
+        public bool isregnouniqueornot(string regno)
+        {
+            return _studentmanagementserviceInterface.isregnouniqueornot( regno);
+        }
+
+        [HttpPost]
+        [Route("updatestudentrecord")]
+        public InsertStudentResponseDTO updatestudentrecord(InsertStudentRequestDTO _insertStudentRequestDTO)
+        {
+            InsertStudentResponseDTO result = _studentmanagementserviceInterface.updatestudentrecord(_insertStudentRequestDTO);
+            return result;
+
+        }
+
+        [HttpDelete]
+        [Route("Makestudentinactive")]
+        public bool Makestudentinactive(string regno)
+        {
+            return _studentmanagementserviceInterface.Makestudentinactive(regno);
+        }
+
 
     }
 }

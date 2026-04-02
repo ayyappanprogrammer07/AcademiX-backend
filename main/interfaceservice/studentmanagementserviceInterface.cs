@@ -15,6 +15,13 @@ namespace main.interfaceservice
 
         public Boysandgirlscount GetTotalBoysandGirlscount();
 
+        public int getcountnewmonth();
+        public bool isregnouniqueornot(string regno);
+
+        public InsertStudentResponseDTO updatestudentrecord(InsertStudentRequestDTO _insertStudentRequestDTO);
+
+        public bool Makestudentinactive(string regno);
+
 
     }
 }

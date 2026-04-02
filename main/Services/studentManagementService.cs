@@ -49,7 +49,25 @@ namespace main.Services
             Boysandgirlscount result = _studentmanagementrepoInterface.GetTotalBoysandGirlscount();
             return result;
         }
+        public int getcountnewmonth()
+        {
+            return _studentmanagementrepoInterface.getcountnewmonth();
+        }
+        public bool isregnouniqueornot(string regno)
+        {
+            return _studentmanagementrepoInterface.isregnouniqueornot(regno);
+        }
 
+        public InsertStudentResponseDTO updatestudentrecord(InsertStudentRequestDTO _insertStudentRequestDTO)
+        {
+            InsertStudentResponseDTO _InsertStudentResponseDTO = _studentmanagementrepoInterface.updatestudentrecord(_insertStudentRequestDTO);
+            return _InsertStudentResponseDTO;
+        }
+
+        public bool Makestudentinactive(string regno)
+        {
+            return _studentmanagementrepoInterface.Makestudentinactive(regno);
+        }
 
     }
 }
